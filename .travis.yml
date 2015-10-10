@@ -1,0 +1,54 @@
+# Travis does not support Python on OS X directly yet. - Workaround with objective-c
+language:
+  - objective-c
+
+# Cache pip packages.
+cache:
+  - pip
+
+os:
+  - osx
+
+env:
+  global:
+    - PYI_BRANCH=develop
+    - PYI_COMMIT=HEAD
+    - REPO_DIR=pyinstaller
+  matrix:
+    - VERSION=2.7.10
+    - VERSION=3.3.5
+    - VERSION=3.4.3
+    - VERSION=3.5.0
+
+before_install:
+
+
+# Install dependencies.
+install:
+  # Build Python interpreter
+  - source terryfy/travis_tools.sh
+  - get_python_environment macpython $VERSION venv
+  - source terryfy/test_python_installs.sh
+
+  # Checkout latest PyInstaller.
+  - checkout_commit $REPO_DIR $PYI_COMMIT $PYI_BRANCH
+
+  # Compile bootloader
+  - cd $REPO_DIR
+  - cd bootloader
+  - python waf distclean all
+
+  # Install PyInstaller.
+  - pip install -e .
+
+  # Install dependencies for tests.
+  # Download-progress bars break Travis's log view. Disable them by piping output
+  # through another program (if output is not a tty, no progress bars)
+  - pip install -r tests/requirements.txt | cat
+  - cd ..
+
+script:
+  # Run tests and speed them up by sending them to multiple CPUs.
+  - cd $REPO_DIR
+  - py.test -n 5
+  - cd ..
