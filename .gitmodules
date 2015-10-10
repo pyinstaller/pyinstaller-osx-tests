@@ -1,0 +1,6 @@
+[submodule "pyinstaller"]
+	path = pyinstaller
+	url = git://github.com/pyinstaller/pyinstaller.git
+[submodule "terryfy"]
+	path = terryfy
+	url = git://github.com/MacPython/terryfy.git
