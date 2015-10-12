@@ -33,10 +33,13 @@ install:
   # Checkout latest PyInstaller.
   - checkout_commit $REPO_DIR $PYI_COMMIT $PYI_BRANCH
 
-  # Compile bootloader
+  # Set pyinstaller to be the CWD .
   - cd $REPO_DIR
+
+  # Compile bootloader.
   - cd bootloader
   - python waf distclean all
+  - cd ..
 
   # Install PyInstaller.
   - pip install -e .
