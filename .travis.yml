@@ -4,7 +4,9 @@ language:
 
 # Cache pip packages.
 cache:
-  - pip
+  directories:
+    - $HOME/.pip-accel
+    - $HOME/Library/Caches/pip
 
 os:
   - osx
@@ -44,10 +46,12 @@ install:
   # Install PyInstaller.
   - pip install -e .
 
-  # Install dependencies for tests.
+  # Install dependencies for tests. Use pip-accel to cache compiled
+  # packages and save recompiling each time.
   # Download-progress bars break Travis's log view. Disable them by piping output
   # through another program (if output is not a tty, no progress bars)
-  - pip install -r tests/requirements.txt | cat
+  - pip install pip-accel | cal
+  - pip-accel install -r tests/requirements.txt | cat
   - cd ..
 
 script:
