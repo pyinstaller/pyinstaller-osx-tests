@@ -1,61 +1,89 @@
-# Travis does not support Python on OS X directly yet. - Workaround with objective-c
-language:
-  - objective-c
-
-# Cache pip packages.
-cache:
-  directories:
-    - $HOME/.pip-accel
-    - $HOME/Library/Caches/pip
-
+# Travis does not support Python on OS X directly yet so only set os not language.
 os:
   - osx
 
 env:
   global:
-    - PYI_BRANCH=develop
-    - PYI_COMMIT=HEAD
+    - PYI_COMMIT=develop
     - REPO_DIR=pyinstaller
   matrix:
-    - VERSION=2.7.10
+    - VERSION=2.7.11
+      SOURCE=macpython
+      DEPENDENCIES=pip
     - VERSION=3.3.5
-    - VERSION=3.4.3
-    - VERSION=3.5.0
-
-before_install:
-
+      SOURCE=macpython
+      DEPENDENCIES=pip
+    - VERSION=3.4.4
+      SOURCE=macpython
+      DEPENDENCIES=pip
+    - VERSION=3.5.1
+      SOURCE=macpython
+      DEPENDENCIES=pip
+    - VERSION=2.7
+      SOURCE=macports
+      DEPENDENCIES=pip
+    - VERSION=3.3
+      SOURCE=macports
+      DEPENDENCIES=pip
+    - VERSION=3.4
+      SOURCE=macports
+      DEPENDENCIES=pip
+    - VERSION=3.5
+      SOURCE=macports
+      DEPENDENCIES=pip
+    - VERSION=2
+      SOURCE=homebrew
+      DEPENDENCIES=pip
+    - VERSION=3
+      SOURCE=homebrew
+      DEPENDENCIES=pip
+    - VERSION=2.7
+      SOURCE=macports
+      DEPENDENCIES=macports
+    - VERSION=3.3
+      SOURCE=macports
+      DEPENDENCIES=macports
+    - VERSION=3.4
+      SOURCE=macports
+      DEPENDENCIES=macports
+    - VERSION=3.5
+      SOURCE=macports
+      DEPENDENCIES=macports
+    - VERSION=2
+      SOURCE=homebrew
+      DEPENDENCIES=homebrew
+    - VERSION=3
+      SOURCE=homebrew
+      DEPENDENCIES=homebrew
 
 # Install dependencies.
 install:
   # Build Python interpreter
   - source terryfy/travis_tools.sh
-  - get_python_environment macpython $VERSION venv
+  - if [ $SOURCE != homebrew ]; then get_python_environment $SOURCE $VERSION venv; else get_python_environment $SOURCE $VERSION; fi
+  - if [ $SOURCE = macports ]; then sudo port -p install curl; fi
   - source terryfy/test_python_installs.sh
+  - if [ $SOURCE = macports ]; then export PYTHON_VERSION=`get_py_mm_nodot`; else export PYTHON_VERSION=`get_py_digit`; fi
 
   # Checkout latest PyInstaller.
-  - checkout_commit $REPO_DIR $PYI_COMMIT $PYI_BRANCH
-
-  # Set pyinstaller to be the CWD .
-  - cd $REPO_DIR
+  - cd $TRAVIS_BUILD_DIR
+  - checkout_commit $REPO_DIR $PYI_COMMIT
 
   # Compile bootloader.
-  - cd bootloader
-  - python waf distclean all
-  - cd ..
+  - cd $TRAVIS_BUILD_DIR/$REPO_DIR/bootloader
+  - $PYTHON_EXE waf distclean all
 
   # Install PyInstaller.
-  - pip install -e .
+  - cd $TRAVIS_BUILD_DIR/$REPO_DIR
+  - $PIP_CMD install -e .
 
-  # Install dependencies for tests. Use pip-accel to cache compiled
-  # packages and save recompiling each time.
+  # Install dependencies for tests.
   # Download-progress bars break Travis's log view. Disable them by piping output
   # through another program (if output is not a tty, no progress bars)
-  - pip install pip-accel | cal
-  - pip-accel install -r tests/requirements.txt | cat
-  - cd ..
+  - source $TRAVIS_BUILD_DIR/utils.sh
+  - install_dependencies
 
 script:
   # Run tests and speed them up by sending them to multiple CPUs.
-  - cd $REPO_DIR
-  - py.test -n 3 --maxfail 3 
-  - cd ..
+  - cd $TRAVIS_BUILD_DIR/$REPO_DIR
+  - py.test -n 5 --maxfail 3
