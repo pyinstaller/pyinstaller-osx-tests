@@ -57,5 +57,5 @@ install:
 script:
   # Run tests and speed them up by sending them to multiple CPUs.
   - cd $REPO_DIR
-  - py.test -n 5
+  - py.test -n 3 --maxfail 3 
   - cd ..
