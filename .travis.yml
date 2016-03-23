@@ -58,8 +58,7 @@ env:
     allow_failures:
       # This configuration for some reason fails to compile some python
       # extensions e.g. lxml, zope.interface
-      - VERSION=3.5
-        SOURCE=macports
+      - env: VERSION=3.5  SOURCE=macports
 
 
 # Install dependencies.
