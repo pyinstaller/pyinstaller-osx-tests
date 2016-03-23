@@ -55,10 +55,13 @@ env:
     - VERSION=3
       SOURCE=homebrew
       DEPENDENCIES=homebrew
-  - allow_failures:
-      # This configuration for some reason fails to compile some python
-      # extensions e.g. lxml, zope.interface
-      - env: VERSION=3.5  SOURCE=macports
+
+
+matrix:
+  allow_failures:
+    # This configuration for some reason fails to compile some python
+    # extensions e.g. lxml, zope.interface
+    - env: VERSION=3.5  SOURCE=macports
 
 
 # Install dependencies.
