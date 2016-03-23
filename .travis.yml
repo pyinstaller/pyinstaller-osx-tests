@@ -55,6 +55,12 @@ env:
     - VERSION=3
       SOURCE=homebrew
       DEPENDENCIES=homebrew
+    allow_failures:
+      # This configuration for some reason fails to compile some python
+      # extensions e.g. lxml, zope.interface
+      - VERSION=3.5
+        SOURCE=macports
+
 
 # Install dependencies.
 install:
@@ -86,4 +92,4 @@ install:
 script:
   # Run tests and speed them up by sending them to multiple CPUs.
   - cd $TRAVIS_BUILD_DIR/$REPO_DIR
-  - py.test -n 5 --maxfail 3
+  - py.test -n 5 --maxfail 9
