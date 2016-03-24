@@ -88,4 +88,4 @@ install:
 script:
   # Run tests and speed them up by sending them to multiple CPUs.
   - cd $TRAVIS_BUILD_DIR/$REPO_DIR
-  - py.test -n 5 --maxfail 9
+  - py.test -n 5
