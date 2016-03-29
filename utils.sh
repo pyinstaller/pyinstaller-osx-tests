@@ -11,6 +11,7 @@ function install_dependencies {
         sudo port -qp install py$PYTHON_VERSION-markdown
         sudo port -qp install py$PYTHON_VERSION-simplejson
         sudo port -qp install py$PYTHON_VERSION-sphinx
+        sudo port -qp install py$PYTHON_VERSION-sphinx_rtd_theme
         sudo port -qp install py$PYTHON_VERSION-zmq
         sudo port -qp install py$PYTHON_VERSION-zopeinterface
         sudo port -qp install py$PYTHON_VERSION-numpy
