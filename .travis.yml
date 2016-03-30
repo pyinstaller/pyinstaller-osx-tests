@@ -57,13 +57,6 @@ env:
       DEPENDENCIES=homebrew
 
 
-matrix:
-  allow_failures:
-    # This configuration for some reason fails to compile some python
-    # extensions e.g. lxml, zope.interface
-    - env: VERSION=3.5  SOURCE=macports
-
-
 # Install dependencies.
 install:
   # Build Python interpreter
@@ -88,10 +81,11 @@ install:
   # Install dependencies for tests.
   # Download-progress bars break Travis's log view. Disable them by piping output
   # through another program (if output is not a tty, no progress bars)
+  - ${PIP_CMD} install -r $TRAVIS_BUILD_DIR/$REPO_DIR/tests/requirements-tools.txt | cat
   - source $TRAVIS_BUILD_DIR/utils.sh
   - install_dependencies
 
 script:
   # Run tests and speed them up by sending them to multiple CPUs.
   - cd $TRAVIS_BUILD_DIR/$REPO_DIR
-  - py.test -n 5 --maxfail 9
+  - py.test -n 5
