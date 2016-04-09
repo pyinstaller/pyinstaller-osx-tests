@@ -62,5 +62,6 @@ function install_dependencies {
     fi
     toggle_py_sys_site_packages
     #${PIP_CMD} install -r $TRAVIS_BUILD_DIR/$REPO_DIR/tests/requirements-mac.txt | cat
-   `dirname $PIP_CMD`/pip-accel install -v -r $TRAVIS_BUILD_DIR/$REPO_DIR/tests/requirements-mac.txt | cat
+    export ACCEL_CMD=`dirname $PIP_CMD`/pip-accel
+    ${ACCEL_CMD} install -r $TRAVIS_BUILD_DIR/$REPO_DIR/tests/requirements-mac.txt | cat
 }

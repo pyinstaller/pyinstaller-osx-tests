@@ -98,6 +98,8 @@ install:
   - install_dependencies
 
 script:
+  # Make sure virtualenv is activated.
+  - source $TRAVIS_BUILD_DIR/venv/bin/activate
   # Run tests and speed them up by sending them to multiple CPUs.
   - cd $TRAVIS_BUILD_DIR/$REPO_DIR
   - py.test -n 5
