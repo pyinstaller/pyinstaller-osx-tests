@@ -63,5 +63,5 @@ function install_dependencies {
     toggle_py_sys_site_packages
     #${PIP_CMD} install -r $TRAVIS_BUILD_DIR/$REPO_DIR/tests/requirements-mac.txt | cat
     # Testing command without 'cat' - Travis will stop if no output detected for 10 minutes.
-    ${PIP_CMD} install -r $TRAVIS_BUILD_DIR/$REPO_DIR/tests/requirements-mac.txt
+    ${PIP_CMD} install -v -r $TRAVIS_BUILD_DIR/$REPO_DIR/tests/requirements-mac.txt
 }

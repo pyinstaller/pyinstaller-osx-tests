@@ -83,7 +83,7 @@ install:
   # through another program (if output is not a tty, no progress bars)
   #- ${PIP_CMD} install -r $TRAVIS_BUILD_DIR/$REPO_DIR/tests/requirements-tools.txt | cat
   # Testing command without 'cat' - Travis will stop if no output detected for 10 minutes.
-  - ${PIP_CMD} install -r $TRAVIS_BUILD_DIR/$REPO_DIR/tests/requirements-tools.txt | cat
+  - ${PIP_CMD} install -v -r $TRAVIS_BUILD_DIR/$REPO_DIR/tests/requirements-tools.txt
   - source $TRAVIS_BUILD_DIR/utils.sh
   - install_dependencies
 
