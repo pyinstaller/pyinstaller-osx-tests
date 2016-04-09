@@ -93,7 +93,7 @@ install:
   # through another program (if output is not a tty, no progress bars)
   - ${PIP_CMD} install pip-accel
   - export ACCEL_CMD=`dirname $PIP_CMD`/pip-accel
-  - ${ACCEL_CMD} -r $TRAVIS_BUILD_DIR/$REPO_DIR/tests/requirements-tools.txt | cat
+  - ${ACCEL_CMD} install -r $TRAVIS_BUILD_DIR/$REPO_DIR/tests/requirements-tools.txt | cat
   - source $TRAVIS_BUILD_DIR/utils.sh
   - install_dependencies
 
