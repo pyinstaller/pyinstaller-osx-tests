@@ -1,3 +1,6 @@
+# This is the history .travis.yml. OS X tests are now run from within
+# the main repository.
+
 # Travis does not support Python on OS X directly yet so only set os not language.
 os:
   - osx
